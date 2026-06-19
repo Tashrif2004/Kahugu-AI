@@ -50,7 +50,7 @@
 | **Music Gen** | MusicGen | Jukebox |
 | **Maps** | OpenStreetMap | Folium |
 | **Database** | PostgreSQL | SQLite |
-| **Voice** | Whisper (OpenAI free tier) | Mozilla STT |
+| **Voice** | Whisper | Mozilla STT |
 | **Messaging** | Telegram Bot | Discord Bot |
 | **Deployment** | Docker | Local/Cloud |
 
@@ -88,37 +88,10 @@ nano .env  # Add your Telegram bot token, etc.
 python main.py
 ```
 
-## 🚀 Quick Start
-
-### 1. Start Central Agent
-```python
-from agents.central_agent import CentralAgent
-
-caugu = CentralAgent()
-caugu.initialize()
-caugu.start()
-```
-
-### 2. Enable Specific Agents
-```python
-caugu.enable_agent('fitness')
-caugu.enable_agent('social_media')
-caugu.enable_agent('creative')
-```
-
-### 3. Send Commands
-```python
-response = caugu.process_command(
-    user_id="user_123",
-    command="Show me my workout stats for today",
-    context="fitness"
-)
-```
-
 ## 📁 Project Structure
 
 ```
-CAUGU/
+Kahugu-AI/
 ├── agents/
 │   ├── central_agent.py       # Main orchestrator
 │   ├── communication_agent.py  # Notifications
@@ -180,10 +153,6 @@ YOUTUBE_API_KEY=free_tier
 # Fitness Tracking
 TRACKING_ENABLED=true
 LOCATION_TRACKING=true
-
-# Social Media (optional - for when you get APIs)
-TWITTER_API_KEY=
-INSTAGRAM_ACCESS_TOKEN=
 ```
 
 ## 📊 Features Breakdown
@@ -199,15 +168,15 @@ INSTAGRAM_ACCESS_TOKEN=
 - Real-time notifications
 - Push alerts
 - Telegram integration
-- Discord support
 - Email notifications
+- Alert history
 
 ### 📱 Social Media Agent
 - Scheduled posts
 - **Approval workflow** (you approve before posting)
-- Instagram/Twitter integration
 - Caption generation
 - Image attachment
+- Post history
 
 ### 🏃 Fitness Agent
 - Step tracking
@@ -227,7 +196,6 @@ INSTAGRAM_ACCESS_TOKEN=
 - Image generation (Stable Diffusion)
 - Music composition
 - Visual art creation
-- Video generation (future)
 - Style transfer
 
 ### 🗺️ Information Agent
@@ -235,76 +203,6 @@ INSTAGRAM_ACCESS_TOKEN=
 - Location services
 - Route planning
 - Weather data
-- Web search
-
-## 🔐 Approval Workflow Example
-
-```python
-# Social media post request
-post_request = {
-    'platform': 'twitter',
-    'content': 'Check out my latest workout!',
-    'image': 'workout_photo.jpg'
-}
-
-# Get approval
-approval = caugu.request_approval(post_request)
-
-if approval:
-    caugu.post_to_social_media(post_request)
-    print("✅ Posted!")
-else:
-    print("❌ Rejected by user")
-```
-
-## 📈 Tracking & Analytics
-
-CAUGU automatically tracks:
-- 📍 Your location & movements
-- 🏃 Workouts & fitness metrics
-- 💬 Conversations & interactions
-- 📝 Generated content
-- 🔔 All notifications
-
-View your dashboard:
-```bash
-python -m http.server 8000 --directory ./dashboard
-```
-
-Then visit: `http://localhost:8000`
-
-## 🎓 Example Usage
-
-```python
-from caugu import CAUGU
-
-# Initialize
-caugu = CAUGU()
-
-# Get fitness advice
-advice = caugu.ask("Give me workout advice based on my activity today")
-
-# Generate content
-image = caugu.create_image("A futuristic AI assistant dashboard")
-
-# Post with approval
-caugu.post_on_social_media(
-    platform="twitter",
-    content="Amazing workout today! 💪",
-    needs_approval=True
-)
-
-# Check location
-location = caugu.get_current_location()
-nearby = caugu.find_gyms_nearby(location, radius=5)
-
-# Music generation
-song = caugu.generate_music(
-    genre="electronic",
-    mood="energetic",
-    duration=30
-)
-```
 
 ## 🚨 Privacy & Security
 
@@ -314,29 +212,6 @@ song = caugu.generate_music(
 - ✅ **Data privacy** - GDPR compliant
 - ✅ **Open source** - Fully auditable code
 
-## 📚 Documentation
-
-- [Setup Guide](docs/SETUP.md)
-- [API Reference](docs/API.md)
-- [Agent Development](docs/AGENTS.md)
-- [Troubleshooting](docs/TROUBLESHOOTING.md)
-
-## 🤝 Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md)
-
-## 📄 License
-
-MIT License - See [LICENSE](LICENSE)
-
-## 🆘 Support
-
-- 📧 Email: support@caugu.ai
-- 💬 Telegram: [@caugu_support](https://t.me/caugu_support)
-- 🐛 Issues: [GitHub Issues](https://github.com/Tashrif2004/Kahugu-AI/issues)
-
 ---
 
-**Made with ❤️ by Tashrif2004**
-
-*CAUGU - Your Personal AI Assistant* 🚀
+**Made with ❤️ by Tashrif2004** | *CAUGU - Your Personal AI Assistant* 🚀
