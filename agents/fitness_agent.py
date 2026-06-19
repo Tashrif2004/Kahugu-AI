@@ -1,8 +1,9 @@
-"""Fitness Agent - Tracks workouts and health metrics"""
+"""Updated Fitness Agent with Enhanced Tracking Service"""
 
 import logging
 from typing import Dict, Any, Optional
-from datetime import datetime, timedelta
+from datetime import datetime
+from services.fitness_tracking_service import FitnessTracker
 
 logger = logging.getLogger(__name__)
 
@@ -12,9 +13,7 @@ class FitnessAgent:
 
     def __init__(self):
         self.name = "Fitness Agent"
-        self.workout_history = []
-        self.daily_stats = {}
-        self.goals = {}
+        self.tracker = FitnessTracker()
         logger.info(f"Initializing {self.name}")
 
     def process(self, command: str) -> Dict[str, Any]:
@@ -26,59 +25,56 @@ class FitnessAgent:
             'timestamp': datetime.now().isoformat()
         }
 
-    def log_workout(self, workout_type: str, duration: int, calories: int, notes: Optional[str] = None) -> Dict[str, Any]:
-        """Log a workout session."""
-        workout = {
-            'id': len(self.workout_history),
-            'type': workout_type,
-            'duration': duration,  # in minutes
-            'calories': calories,
-            'notes': notes,
-            'timestamp': datetime.now().isoformat()
-        }
-        self.workout_history.append(workout)
-        logger.info(f"Workout logged: {workout_type} - {duration}min, {calories}kcal")
-        return workout
+    def log_workout(self, workout_type: str, duration: int, intensity: str = "moderate",
+                   calories: Optional[int] = None, distance: Optional[float] = None,
+                   location: Optional[str] = None, heart_rate_avg: Optional[int] = None,
+                   notes: Optional[str] = None) -> Dict[str, Any]:
+        """Log a comprehensive workout session."""
+        return self.tracker.log_workout(
+            workout_type=workout_type,
+            duration=duration,
+            intensity=intensity,
+            calories=calories,
+            distance=distance,
+            location=location,
+            heart_rate_avg=heart_rate_avg,
+            notes=notes
+        )
 
     def get_daily_stats(self, date: Optional[str] = None) -> Dict[str, Any]:
         """Get daily fitness statistics."""
-        if not date:
-            date = datetime.now().strftime('%Y-%m-%d')
+        return self.tracker.get_daily_stats(date)
 
-        today_workouts = [w for w in self.workout_history 
-                         if w['timestamp'].startswith(date)]
+    def get_weekly_stats(self) -> Dict[str, Any]:
+        """Get weekly fitness statistics."""
+        return self.tracker.get_weekly_stats()
 
-        total_calories = sum(w['calories'] for w in today_workouts)
-        total_duration = sum(w['duration'] for w in today_workouts)
-        workout_count = len(today_workouts)
+    def get_monthly_stats(self) -> Dict[str, Any]:
+        """Get monthly fitness statistics."""
+        return self.tracker.get_monthly_stats()
 
-        return {
-            'date': date,
-            'workouts': workout_count,
-            'total_duration': total_duration,
-            'total_calories': total_calories,
-            'avg_duration': total_duration / workout_count if workout_count > 0 else 0
-        }
+    def set_goal(self, goal_type: str, target_value: int, timeframe: str, unit: str = "") -> Dict[str, Any]:
+        """Set a fitness goal."""
+        return self.tracker.set_goal(goal_type, target_value, timeframe, unit)
+
+    def get_goals(self) -> Dict[str, Any]:
+        """Get all current goals."""
+        return self.tracker.get_goals()
+
+    def get_goal_progress(self, goal_type: str) -> Dict[str, Any]:
+        """Get progress for a specific goal."""
+        return self.tracker.get_goal_progress(goal_type)
+
+    def get_achievements(self) -> list:
+        """Get all achievements."""
+        return self.tracker.get_achievements()
 
     def get_advice(self) -> str:
-        """Provide AI-powered fitness advice."""
-        stats = self.get_daily_stats()
-        
-        if stats['workouts'] == 0:
-            return "💪 You haven't worked out today. Time to get moving!"
-        elif stats['workouts'] >= 2:
-            return "🔥 Great job! You've had multiple workouts today. Stay hydrated!"
-        else:
-            return "👍 Good start! You could fit in another quick session today."
+        """Get AI-powered fitness advice."""
+        return self.tracker.get_ai_advice()
 
-    def set_goal(self, goal_type: str, target_value: int, timeframe: str) -> bool:
-        """Set a fitness goal."""
-        goal = {
-            'type': goal_type,
-            'target': target_value,
-            'timeframe': timeframe,
-            'created_at': datetime.now().isoformat()
-        }
-        self.goals[goal_type] = goal
-        logger.info(f"Goal set: {goal_type} - {target_value} {timeframe}")
-        return True
+    def get_all_workouts(self, limit: Optional[int] = None) -> list:
+        """Get all logged workouts."""
+        if limit:
+            return self.tracker.workouts[-limit:]
+        return self.tracker.workouts
