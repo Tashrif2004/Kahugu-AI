@@ -1,0 +1,44 @@
+# This file is a placeholder for Flutter app configuration
+# Use this to guide your Flutter app setup
+
+name: caugu_app
+description: CAUGU - AI Personal Assistant Mobile App
+publish_to: none
+
+environment:
+  sdk: '>=2.19.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.1.0
+  provider: ^6.0.0
+  intl: ^0.18.0
+  fl_chart: ^0.65.0
+  image_picker: ^1.0.0
+  geolocator: ^10.0.0
+  permission_handler: ^11.4.0
+  shared_preferences: ^2.2.0
+  firebase_core: ^2.24.0
+  firebase_messaging: ^14.6.0
+  workmanager: ^0.5.1
+  pedometer: ^3.0.0
+  health: ^7.0.0
+  flutter_launcher_icons: ^0.13.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_linter: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
