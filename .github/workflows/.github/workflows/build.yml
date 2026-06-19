@@ -1,0 +1,38 @@
+name: Build Kahugu AI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+        continue-on-error: true
+
+      - name: Expo export (verify bundling)
+        run: npx expo export --platform web
+        continue-on-error: true
+
+      - name: Upload Web Build as Artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kahugu-web
+          path: dist
